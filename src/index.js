@@ -11,7 +11,7 @@ import rootSaga from '../src/saga/saga'
 const sagaMiddleware = saga()
 const store = createStore(rootReducer, compose(
     applyMiddleware(thunk,sagaMiddleware),
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    // window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 ))
 sagaMiddleware.run(rootSaga)
 
