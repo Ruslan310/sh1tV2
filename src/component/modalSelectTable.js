@@ -7,8 +7,8 @@ const ModalSelectTable = (props) => {
       props.fetchPutReport({
          id: props.selectTableComment.id,
          dt_begin: props.selectTableComment.dt_begin,
-         dt_End: props.selectTableComment.dt_end ? props.selectTableComment.dt_end : inputTimeOn.current?.value,
-         CommentTable: props.selectTableComment.comment ? props.selectTableComment.comment : inputComment.current?.value,
+         dt_end: props.selectTableComment.dt_end ? props.selectTableComment.dt_end : inputTimeOn.current?.value,
+         comment: props.selectTableComment.comment ? props.selectTableComment.comment : inputComment.current?.value,
          dt_date: props.selectTableComment.dt_date
       })
       // clearInput() --- зависает!!?:???

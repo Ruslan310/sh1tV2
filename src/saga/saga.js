@@ -121,7 +121,7 @@ function* fetchPutReport(action) {
    }
    console.log('saga_cheng', action.value)
    try {
-      let data = yield fetch('http://localhost:4000/changeDashbord', options)
+      let data = yield fetch(process.env.REACT_APP_SAGA_PUT_REPORT, options)
          .then(response => response.json());
       console.log('saga_cheng-data', data)
 
