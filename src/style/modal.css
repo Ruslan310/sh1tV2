@@ -1,0 +1,89 @@
+.services{
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(0,0,0, 0.4);
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.3s;
+    backdrop-filter: blur(2px);
+    z-index:16;
+    user-select: none;
+}
+
+.services.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.services_content{
+    margin-bottom: 100px;
+    padding: 20px;
+    border-radius: 12px;
+
+    background-color: white;
+    transform: scale(0.5);
+    transition: 0.4s all;
+    width: 30vw;
+    cursor:pointer;
+}
+
+.scroll{
+    overflow-y: scroll;
+    padding: 30px;
+
+    height: 600px;
+}
+
+.scroll::-webkit-scrollbar{
+    width: 0;
+    background: transparent;
+}
+.scroll{
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.scrollApteka{
+    margin-bottom:0px;
+    padding: 5px 0 5px 20px;
+}
+.scrollApteka:hover{
+    background-color: #9da5a2;
+}
+
+.services_content.active{
+    transform: scale(1);
+}
+.wraperNavbar{
+    width: 100%;
+    padding-left: 40px;
+}
+
+.wraperNavbarText{
+    padding-left: 250px;
+    color: white;
+    margin: 0 auto;
+    text-align: center;
+    justify-content: center;
+}
+
+.inputTitleTime{
+    width: 200px;
+    margin-right: 10px;
+}
+
+.services_text{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.commentText{
+    width: 200px;
+    margin-bottom: 0;
+}
