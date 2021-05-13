@@ -11,7 +11,7 @@ const App = () => {
     const dispatch = useDispatch()
     useEffect(() => {
         dispatch(fetchApteks())
-        // dispatch(fetchReport())
+        dispatch(fetchReport())
     }, [])// eslint-disable-line
     return (
         <BrowserRouter>

@@ -30,6 +30,7 @@ const $BordTable = (props) => {
             selectTableComment={props.selectTableComment}
             fetchPutReport={props.fetchPutReport}
             fetchReport={props.fetchReport}
+            writeSelectTableRow={props.writeSelectTableRow}
          />
       <table className='table ml-3 w-45'>
          <thead>

@@ -5,7 +5,7 @@ import {
    POST_COMMENT_RECEIVED,
    LOG_IN_FAILED,
    FETCH_REPORT,
-   FETCH_REPORT_RECEIVED, FETCH_CHANGE_REPORT, FETCH_CHANGE_REPORT_RECEIVED
+   FETCH_REPORT_RECEIVED, FETCH_CHANGE_REPORT, FETCH_CHANGE_REPORT_RECEIVED, localUpdateStoreRow
 } from "../redux/action";
 
 import {put, takeLatest, all} from 'redux-saga/effects';
@@ -92,6 +92,8 @@ function* fetchReport(action) {
          let parsed = {}
          parsed.apteka = item.apteka
          parsed.dt_date = format(item.dt_date).date
+         parsed.date = item.dt_date.substring(0, 10)
+         // console.log(parsed.parsed.date)
          parsed.grafik = formatGrafik(item.grafik)
          parsed.dt_end = !item.dt_end ? item.dt_end : format(item.dt_end).time
          parsed.dt_begin = format(item.dt_begin).time
@@ -121,11 +123,12 @@ function* fetchPutReport(action) {
    }
    console.log('saga_cheng', action.value)
    try {
-      let data = yield fetch(process.env.REACT_APP_SAGA_PUT_REPORT, options)
+      let data = yield fetch('https://tmc.lll.org.ua/test/changeDashbord', options)
          .then(response => response.json());
       console.log('saga_cheng-data', data)
 
       yield put({type: FETCH_CHANGE_REPORT_RECEIVED, data: data});
+      yield put(localUpdateStoreRow(Object.assign(action.value, {isChange: data})))
    } catch (error) {
       yield put({type: LOG_IN_FAILED, data: error.toString()});
    }
