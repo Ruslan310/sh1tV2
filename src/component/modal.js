@@ -10,7 +10,6 @@ const Modale = (props) =>{
     }
     const startFilter = (e) => {
         props.setFilter(e.target.value)
-        console.log(e.target.value)
     }
 
   return(

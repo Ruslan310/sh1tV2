@@ -113,7 +113,17 @@ const $Comment = (props) => {
                             setFilter={props.setFilter}
                         />
                     </div>
-                    {!props.textApteka.apteka ? <h6>аптека не выбрана</h6> : <h3>{props.textApteka.apteka}</h3>}
+                    {!props.textApteka.apteka ? <h6>аптека не выбрана</h6> :
+                        <div className='d-flex flex-column align-items-center'>
+                            <h3>{props.textApteka.apteka}</h3>
+                                {props.textApteka.days1==="00:00" ?
+                                    <h5>Круглосуточная</h5> :
+                                <div className='d-flex justify-content-center'>
+                                    <h5>{props.textApteka.days1} - </h5>
+                                    <h5 className='pl-1'>{props.textApteka.days2}</h5>
+                                </div>}
+                        </div>
+                    }
                     <div>
                         <div className="d-flex flex-row align-items-center">
                             <FormControl

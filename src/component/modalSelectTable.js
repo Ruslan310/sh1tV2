@@ -55,17 +55,21 @@ const ModalSelectTable = (props) => {
                     <h3 className='text-center'>{props.selectTableComment?.apteka}</h3>
                     <h5 className='text-center'>График: {props.selectTableComment?.grafik}</h5>
                     <hr width="250" size="5"/>
-                    <h5 className='w-100 d-flex align-items-center'>Время выключения :</h5>
+                    <div className='w-100 d-flex align-items-center justify-content-center mb-2'>
+                        <h5 className='mr-4'>Время включения :</h5>
                     <FormControl
+                        className='inputModalTime'
                         value={dt_begin}
                         onChange={handlerInputComment}
                         type='time'
                         ref={inputTimeOff}
                         placeholder='не указано'
                     />
-                    <div className='w-100 d-flex align-items-center'>
+                    </div>
+                    <div className='w-100 d-flex align-items-center justify-content-center mb-2'>
                         <h5 className='mr-4'>Время включения :</h5>
                         <FormControl
+                            className='inputModalTime'
                             value={dt_end}
                             onChange={handlerInputComment}
                             type='time'
@@ -76,6 +80,7 @@ const ModalSelectTable = (props) => {
                     <h5>Коментарий : </h5>
                     <hr width="270" size="5"/>
                     <FormControl
+                        className='inputTitleModal'
                         value={comment}
                         onChange={handlerInputComment}
                         ref={inputComment}
@@ -83,7 +88,8 @@ const ModalSelectTable = (props) => {
                         as="textarea" rows={1}
                     />
                     <hr width="270" size="5"/>
-                    <Button className="buttonTable" variant="success"
+                    <Button
+                        className="buttonTable" variant="success"
                             onClick={recordChangesReport}
                     >Сохранить изменения</Button>
                 </div>
