@@ -20,7 +20,11 @@ export const REPORT_TIME_END = 'REPORT_TIME_END'
 export const WRITE_SELECT_TABLE_ROW = 'WRITE_SELECT_TABLE_ROW'
 export const FETCH_CHANGE_REPORT = 'FETCH_CHANGE_REPORT'
 export const FETCH_CHANGE_REPORT_RECEIVED = 'FETCH_CHANGE_REPORT_RECEIVED'
+export const LOCAL_UPDATE_STORE_ROW = 'LOCALY_UPDATE_STORE_ROW'
 
+export const localUpdateStoreRow = value => ({
+    type: LOCAL_UPDATE_STORE_ROW, value
+})
 export const enterTimeStart = (value) => ({
     type: REPORT_TIME_START, value
 })

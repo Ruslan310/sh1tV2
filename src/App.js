@@ -8,10 +8,14 @@ import {useDispatch} from "react-redux";
 
 
 const App = () => {
+    let nowDate = new Date().toISOString().substr(0, 10)
     const dispatch = useDispatch()
     useEffect(() => {
         dispatch(fetchApteks())
-        // dispatch(fetchReport())
+        dispatch(fetchReport({
+            dateStart: nowDate,
+            dateEnd: nowDate,
+        }))
     }, [])// eslint-disable-line
     return (
         <BrowserRouter>

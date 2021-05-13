@@ -20,9 +20,10 @@ import {
     REPORT_TIME_END,
     WRITE_SELECT_TABLE_ROW,
     FETCH_CHANGE_REPORT,
-    FETCH_CHANGE_REPORT_RECEIVED
+    FETCH_CHANGE_REPORT_RECEIVED, LOCAL_UPDATE_STORE_ROW
 } from "../redux/action";
-let nowDate = new Date().toISOString().substr(0,10)
+
+let nowDate = new Date().toISOString().substr(0, 10)
 let message
 const initialState = {
     getApteka: null,
@@ -39,12 +40,23 @@ const initialState = {
     tableReport: null,
     reportTimeStart: nowDate,
     reportTimeEnd: nowDate,
-    selectTableComment:null,
+    selectTableComment: null,
     isChangeReport: null
 }
 
 export const commentReducer = (state = initialState, action) => {
     switch (action.type) {
+        case LOCAL_UPDATE_STORE_ROW:
+            if (action.value.isChange) {
+                let newTableReport = state.tableReport.map(row => {
+                    if (row.id === action.value.id) {
+                        return Object.assign(row, action.value);
+                    }
+                    return row;
+                })
+                return {...state, tableReport: newTableReport}
+            }
+            return state
         case REPORT_TIME_START:
             return {...state, reportTimeStart: action.value}
         case REPORT_TIME_END:
@@ -52,34 +64,43 @@ export const commentReducer = (state = initialState, action) => {
         case FETCH_APTEKS:
             return state
         case FETCH_REPORT:
-            return {...state, isLoader:true}
+            return {...state, isLoader: true}
         case FETCH_CHANGE_REPORT:
-            return {...state, isLoader:true}
+            return {...state, isLoader: true}
         case FETCH_CHANGE_REPORT_RECEIVED:
-            if (action.data){
+            if (action.data) {
                 message = 'Изменения внесены'
             } else {
                 message = 'Не удалось внести изменения'
             }
-            return {...state, isChangeReport: action.data, modalMessage: message, isLoader:false}
+            return {...state, isChangeReport: action.data, modalMessage: message, isLoader: false}
         case APTEKS_RECEIVED:
             return {...state, getApteka: action.data, aptekaFiltered: action.data}
         case FETCH_REPORT_RECEIVED:
-            if (action.data.length<1) {
+            if (action.data.length < 1) {
                 message = 'нет записей в талице'
-            } else {message = ''}
-            return {...state, tableReport: action.data, isLoader:false, modalMessage: message}
+            } else {
+                message = ''
+            }
+            return {...state, tableReport: action.data, isLoader: false, modalMessage: message}
         case LOG_IN_FAILED:
-            return {...state, error: action.data,modalMessage: 'Нет связи с сервером', isLoader:false}
+            return {...state, error: action.data, modalMessage: 'Нет связи с сервером', isLoader: false}
         case POST_COMMENT:
-            return {...state, isLoader:true}
+            return {...state, isLoader: true}
         case POST_COMMENT_RECEIVED:
-            if (action.data){
+            if (action.data) {
                 message = 'Коментарий успешно записан'
+                    // let newTableReport = state.tableReport.map(row => {
+                    //     if (row.id === action.value.id) {
+                    //         return Object.assign(row, action.value);
+                    //     }
+                    //     return row;
+                    // })
+                    // return {...state, tableReport: newTableReport, postCommentDate: action.data, isLoader: false, modalMessage: message}
             } else {
                 message = 'Коментарий неудалось записать'
             }
-            return {...state, postCommentDate: action.data, isLoader:false, modalMessage: message}
+            return {...state, postCommentDate: action.data, isLoader: false, modalMessage: message}
         case CLOSE_APTEKS:
             return {...state, showApteka: false}
         case SHOW_APTEKS:
@@ -101,9 +122,9 @@ export const commentReducer = (state = initialState, action) => {
             for (let i = 0; i < stOnline.length; i++) {
                 let result = false
                 stOnline[i].isFilter = false
-                    if (stOnline[i].apteka.toLowerCase().includes(stText.toLowerCase())) {
-                        result = true
-                    }
+                if (stOnline[i].apteka.toLowerCase().includes(stText.toLowerCase())) {
+                    result = true
+                }
                 if (result) {
                     stOnline[i].isFilter = true
                 }
@@ -115,10 +136,9 @@ export const commentReducer = (state = initialState, action) => {
                 filtrlist[i].isFilter = true
             }
             return {...state, aptekaFiltered: filtrlist}
-
         case SET_MODAL_MESSAGE:
             return {...state, modalMessage: action.message}
-            case WRITE_SELECT_TABLE_ROW:
+        case WRITE_SELECT_TABLE_ROW:
             return {...state, selectTableComment: action.value}
         default:
             return state

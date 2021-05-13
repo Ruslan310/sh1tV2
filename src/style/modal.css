@@ -77,6 +77,14 @@
     width: 200px;
     margin-right: 10px;
 }
+.inputTitleModal{
+    width: 350px;
+    margin-right: 10px;
+}
+.inputModalTime{
+    width: 100px;
+    margin-right: 10px;
+}
 
 .services_text{
     display: flex;
