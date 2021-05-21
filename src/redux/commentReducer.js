@@ -16,14 +16,15 @@ import {
     SET_MODAL_MESSAGE,
     FETCH_REPORT,
     FETCH_REPORT_RECEIVED,
-    REPORT_TIME_START,
-    REPORT_TIME_END,
     WRITE_SELECT_TABLE_ROW,
     FETCH_CHANGE_REPORT,
-    FETCH_CHANGE_REPORT_RECEIVED, LOCAL_UPDATE_STORE_ROW
+    FETCH_CHANGE_REPORT_RECEIVED,
+    LOCAL_UPDATE_STORE_ROW,
+    WRITE_REPORT_FOR_EXEL,
+    CLEAN_APTEKA,
+    SELECT_WINDOW
 } from "../redux/action";
 
-let nowDate = new Date().toISOString().substr(0, 10)
 let message
 const initialState = {
     getApteka: null,
@@ -38,10 +39,10 @@ const initialState = {
     modalMessage: '',
     error: null,
     tableReport: null,
-    reportTimeStart: nowDate,
-    reportTimeEnd: nowDate,
     selectTableComment: null,
-    isChangeReport: null
+    isChangeReport: null,
+    reportForExel: null,
+    window: 'component'
 }
 
 export const commentReducer = (state = initialState, action) => {
@@ -57,10 +58,6 @@ export const commentReducer = (state = initialState, action) => {
                 return {...state, tableReport: newTableReport}
             }
             return state
-        case REPORT_TIME_START:
-            return {...state, reportTimeStart: action.value}
-        case REPORT_TIME_END:
-            return {...state, reportTimeEnd: action.value}
         case FETCH_APTEKS:
             return state
         case FETCH_REPORT:
@@ -90,13 +87,6 @@ export const commentReducer = (state = initialState, action) => {
         case POST_COMMENT_RECEIVED:
             if (action.data) {
                 message = 'Коментарий успешно записан'
-                    // let newTableReport = state.tableReport.map(row => {
-                    //     if (row.id === action.value.id) {
-                    //         return Object.assign(row, action.value);
-                    //     }
-                    //     return row;
-                    // })
-                    // return {...state, tableReport: newTableReport, postCommentDate: action.data, isLoader: false, modalMessage: message}
             } else {
                 message = 'Коментарий неудалось записать'
             }
@@ -131,7 +121,7 @@ export const commentReducer = (state = initialState, action) => {
             }
             return {...state, aptekaFiltered: stOnline}
         case RESET_FILTER:
-            let filtrlist = state.apteka.slice()
+            let filtrlist = state.getApteka.slice()
             for (let i = 0; i < filtrlist.length; i++) {
                 filtrlist[i].isFilter = true
             }
@@ -140,6 +130,12 @@ export const commentReducer = (state = initialState, action) => {
             return {...state, modalMessage: action.message}
         case WRITE_SELECT_TABLE_ROW:
             return {...state, selectTableComment: action.value}
+        case WRITE_REPORT_FOR_EXEL:
+            return {...state, reportForExel: action.value}
+        case CLEAN_APTEKA:
+            return {...state, textApteka: ''}
+        case SELECT_WINDOW:
+            return {...state, window: action.window}
         default:
             return state
     }

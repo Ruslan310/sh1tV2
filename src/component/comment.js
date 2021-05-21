@@ -4,7 +4,6 @@ import Modale from "./modal";
 import Loader from "./loader";
 import BordTable from "./bordTable";
 import {
-
     enterApteks,
     enterTextComment,
     enterWhatTimeOff,
@@ -15,10 +14,13 @@ import {
     selectTarget,
     setFilter,
     postComment,
-    setModalMessage
+    setModalMessage,
+    cleanApteka,
+    resetFilter
 } from "../redux/action";
 import TitleNavbar from "./titleNavbar";
-import {useRef} from "react";
+import Info from "./Info";
+import useInput from "../hooks/useInput";
 
 const mapStateToProps = (state) => ({
     aptekaFiltered: state.comment.aptekaFiltered,
@@ -31,6 +33,7 @@ const mapStateToProps = (state) => ({
     error: state.comment.error,
     postCommentDate: state.comment.postCommentDate,
     modalMessage: state.comment.modalMessage,
+    window: state.comment.window,
 })
 
 const mapDispatchToProps = ({
@@ -44,55 +47,49 @@ const mapDispatchToProps = ({
     selectTarget,
     setFilter,
     postComment,
-    setModalMessage
+    setModalMessage,
+    cleanApteka,
+    resetFilter
 })
 
 
 const $Comment = (props) => {
 
-    const commentHandler = (e) => {
-        props.enterTextComment(e.target.value)
-    }
-    const commentTimeOnHandler = (e) => {
-        props.enterWhatTimeOn(e.target.value)
-    }
-    const commentTimeOffHandler = (e) => {
-        props.enterWhatTimeOff(e.target.value)
-    }
-
-    const wrightEntered = (e) => {
+    const inputenterTimeOff = useInput('')
+    const inputenterTimeOn = useInput('')
+    const inputtextComment = useInput('')
+    const wrightEntered = () => {
         if (!props.textApteka.idApteka) {
             props.setModalMessage('Выберите аптеку')
             return null
         }
-        if (!props.enterTimeOff) {
+        if (!inputenterTimeOff.value) {
             props.setModalMessage('Некоректное время')
             return null
         }
-        if (props.enterTimeOn < props.enterTimeOff) {
+        if (inputenterTimeOn.value && inputenterTimeOn.value < inputenterTimeOff.value) {
             props.setModalMessage('Некоректный интервал времени')
             return null
         }
         props.postComment({
             whatApteka: props.textApteka.idApteka,
-            timeOff: props.enterTimeOff, /** должна быть (левая)*/
-            timeOn: props.enterTimeOn, /** должна быть (правая)*/
-            whatComment: props.textComment
+            timeOff: inputenterTimeOff.value, /** должна быть (левая)*/
+            timeOn: inputenterTimeOn.value, /** должна быть (правая)*/
+            whatComment: inputtextComment.value
         })
-        ///ref зачистка
+        props.cleanApteka()
+        inputenterTimeOff.onChange({target:{value:''}})
+        inputenterTimeOn.onChange({target:{value:''}})
+        inputtextComment.onChange({target:{value:''}})
     }
 
-    const enterTimeOff = useRef()
-    const enterTimeOn = useRef()
-    const textComment = useRef()
-
     return (
-        <div className="mainWrapper d-flex flex-column align-items-center">
+        <div className="mainWrapper d-flex flex-column">
             {props.isLoader === true ? <Loader/> : null}
             <TitleNavbar/>
-            <div className="d-flex flex-row w-100">
+            {props.window === 'component' && <div className="wraperComponent">
                 <BordTable/>
-                <div className="d-flex flex-column align-items-center w-50">
+                <div className="wraperAddComment">
                     <Modal
                         size="sm"
                         show={!!props.modalMessage}
@@ -111,13 +108,14 @@ const $Comment = (props) => {
                             setActive={props.CloseApteks}
                             selectTargApteka={props.selectTarget}
                             setFilter={props.setFilter}
+                            resetFilter={props.resetFilter}
                         />
                     </div>
                     {!props.textApteka.apteka ? <h6>аптека не выбрана</h6> :
                         <div className='d-flex flex-column align-items-center'>
                             <h3>{props.textApteka.apteka}</h3>
-                                {props.textApteka.days1==="00:00" ?
-                                    <h5>Круглосуточная</h5> :
+                            {props.textApteka.days1 === "00:00" ?
+                                <h5>Круглосуточная</h5> :
                                 <div className='d-flex justify-content-center'>
                                     <h5>{props.textApteka.days1} - </h5>
                                     <h5 className='pl-1'>{props.textApteka.days2}</h5>
@@ -127,36 +125,35 @@ const $Comment = (props) => {
                     <div>
                         <div className="d-flex flex-row align-items-center">
                             <FormControl
+                                {...inputenterTimeOff}
                                 style={{width: 191}}
                                 className="m-2"
-                                placeholder="Выключили свет"
-                                ref={enterTimeOff}
                                 type='time'
-                                onChange={(e) => commentTimeOffHandler(e)}
                             />
                             <FormControl
+                                {...inputenterTimeOn}
                                 style={{width: 192}}
                                 type='time'
                                 className="m-2"
-                                placeholder="Включили свет"
-                                onChange={(e) => commentTimeOnHandler(e)}
                             />
                         </div>
                         <FormControl
                             as="textarea" rows={2}
-                            style={{width: 400}}
-                            className="m-2"
+                            {...inputtextComment}
+                            className="textareaComment"
                             placeholder="оставьте ваш коментарий"
-                            onChange={(e) => commentHandler(e)}
                         />
                     </div>
                     <Button
-                        className="m-3"
+                        className="saveButton"
                         variant="success"
                         onClick={(e) => wrightEntered(e)}
                     >Сохранить коментарий</Button>
                 </div>
-            </div>
+            </div>}
+            {props.window === 'info' && <Info
+                resetFilter={props.resetFilter}
+            />}
         </div>
     );
 };

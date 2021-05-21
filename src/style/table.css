@@ -1,12 +1,11 @@
 .table {
     width: 100%;
     border: none;
-    margin-bottom: 20px;
-    margin-top: 20px;
     overflow-y: scroll;
     font-size: 16px;
     text-align: center;
     user-select: none;
+
 }
 .table thead th {
     font-weight: bold;
@@ -15,7 +14,6 @@
     background: #d8d8d8;
     border: #f3f3f3;
 }
-
 .table thead tr th:first-child {
     border-radius: 8px 0 0 8px;
 }
@@ -25,7 +23,6 @@
 .table thead tr th:last-child {
     border-radius: 0 8px 8px 0;
 }
-
 .table th td
 .table tbody td {
     text-align: center;
@@ -42,6 +39,48 @@ tbody tr:nth-child(odd) {
 .table tbody tr td:last-child {
     border-radius: 0 8px 8px 0;
 }
-.tableTd{
+.aptekaCell{
     text-align: left;
+    max-width: 250px;
+}
+.wraperComponent{
+    width: 100vw;
+    max-width: 100%;
+    display: flex;
+}
+.wraperAddComment{
+    width: 600px;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    padding-right: 30px;
+    margin-top: 30px;
+}
+.wraperTable{
+    max-width: calc(100vw - 600px);
+    width: calc(100vw - 600px);
+    padding: 20px 40px;
+}
+.textareaComment {
+    width: calc(100% - 18px);
+    margin-left: 10px;
+}
+.commentCell {
+    max-width: 200px;
+}
+.saveButton {
+    margin: 10px auto 0;
+    width: fit-content;
+}
+.infoTableWrapper {
+    max-width: 1500px;
+    margin: 20px auto 0;
+}
+.inputinfoForm  {
+    margin-bottom: 20px;
+}
+.colCell{
+    max-width: 90px;
 }

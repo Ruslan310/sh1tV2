@@ -19,6 +19,10 @@ const ModalSelectTable = (props) => {
         console.log(comment, dt_end, dt_begin)
     }, [props.active])
     const recordChangesReport = () => {
+        if (dt_begin>dt_end){
+            props.setModalMessage('Некоректное время')
+            return null
+        }
         props.fetchPutReport({
             id: props.selectTableComment.id,
             dt_begin: dt_begin || props.selectTableComment.dt_begin,
@@ -43,6 +47,17 @@ const ModalSelectTable = (props) => {
         setDt_begin(inputTimeOff.current.value)
     }
 
+    const clearSetTimeOn = () =>{
+        props.fetchPutReport({
+            id: props.selectTableComment.id,
+            dt_begin: dt_begin || props.selectTableComment.dt_begin,
+            dt_end: null,
+            comment: comment || props.selectTableComment.comment,
+            dt_date: props.selectTableComment?.date
+        })
+        props.setActive(false)
+        clearInput()
+    }
     const inputTimeOn = useRef()
     const inputComment = useRef()
     const inputTimeOff = useRef()
@@ -52,19 +67,20 @@ const ModalSelectTable = (props) => {
             <div className={props.active ? 'services_content active' : 'services_content'}
                  onMouseDown={e => e.stopPropagation()}>
                 <div className='services_text'>
-                    <h3 className='text-center'>{props.selectTableComment?.apteka}</h3>
-                    <h5 className='text-center'>График: {props.selectTableComment?.grafik}</h5>
+                    <p className='modalTitle'>{props.selectTableComment?.apteka}</p>
+                    <p className='modalTitle'>График: {props.selectTableComment?.grafik}</p>
                     <hr width="250" size="5"/>
-                    <div className='w-100 d-flex align-items-center justify-content-center mb-2'>
-                        <h5 className='mr-4'>Время включения :</h5>
-                    <FormControl
-                        className='inputModalTime'
-                        value={dt_begin}
-                        onChange={handlerInputComment}
-                        type='time'
-                        ref={inputTimeOff}
-                        placeholder='не указано'
-                    />
+                    <div className='w-100 d-flex align-items-center justify-content-center mb-2 mr-3'>
+                        <h5 className='mr-4'>Время выключения :</h5>
+                        <FormControl
+                            className='inputModalTime'
+                            value={dt_begin}
+                            onChange={handlerInputComment}
+                            type='time'
+                            ref={inputTimeOff}
+                            placeholder='не указано'
+                        />
+
                     </div>
                     <div className='w-100 d-flex align-items-center justify-content-center mb-2'>
                         <h5 className='mr-4'>Время включения :</h5>
@@ -76,6 +92,7 @@ const ModalSelectTable = (props) => {
                             ref={inputTimeOn}
                             placeholder='не указано'
                         />
+                        <Button variant="light" onClick={clearSetTimeOn}>I</Button>
                     </div>
                     <h5>Коментарий : </h5>
                     <hr width="270" size="5"/>
@@ -85,12 +102,12 @@ const ModalSelectTable = (props) => {
                         onChange={handlerInputComment}
                         ref={inputComment}
                         type='text'
-                        as="textarea" rows={1}
+                        as="textarea" rows={2}
                     />
                     <hr width="270" size="5"/>
                     <Button
                         className="buttonTable" variant="success"
-                            onClick={recordChangesReport}
+                        onClick={recordChangesReport}
                     >Сохранить изменения</Button>
                 </div>
             </div>
