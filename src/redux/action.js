@@ -15,21 +15,16 @@ export const LOG_IN_FAILED = 'LOG_IN_FAILED'
 export const SET_MODAL_MESSAGE = 'SET_MODAL_MESSAGE'
 export const FETCH_REPORT = 'FETCH_REPORT'
 export const FETCH_REPORT_RECEIVED = 'FETCH_REPORT_RECEIVED'
-export const REPORT_TIME_START = 'REPORT_TIME_START'
-export const REPORT_TIME_END = 'REPORT_TIME_END'
 export const WRITE_SELECT_TABLE_ROW = 'WRITE_SELECT_TABLE_ROW'
 export const FETCH_CHANGE_REPORT = 'FETCH_CHANGE_REPORT'
 export const FETCH_CHANGE_REPORT_RECEIVED = 'FETCH_CHANGE_REPORT_RECEIVED'
-export const LOCAL_UPDATE_STORE_ROW = 'LOCALY_UPDATE_STORE_ROW'
+export const LOCAL_UPDATE_STORE_ROW = 'LOCAL_UPDATE_STORE_ROW'
+export const WRITE_REPORT_FOR_EXEL = 'WRITE_REPORT_FOR_EXEL'
+export const CLEAN_APTEKA = 'CLEAN_APTEKA'
+export const SELECT_WINDOW = 'SELECT_WINDOW'
 
 export const localUpdateStoreRow = value => ({
     type: LOCAL_UPDATE_STORE_ROW, value
-})
-export const enterTimeStart = (value) => ({
-    type: REPORT_TIME_START, value
-})
-export const enterWhatTimeEnd = (value) => ({
-    type: REPORT_TIME_END, value
 })
 export const fetchApteks = () => ({
     type: FETCH_APTEKS
@@ -78,4 +73,13 @@ export const setModalMessage = (message) => ({
 })
 export const writeSelectTableRow = (value) => ({
     type: WRITE_SELECT_TABLE_ROW,value
+})
+export const writeReportForExel = (value) => ({
+    type: WRITE_REPORT_FOR_EXEL,value
+})
+export const cleanApteka = () => ({
+    type: CLEAN_APTEKA
+})
+export const selectWindow = (window) => ({
+    type: SELECT_WINDOW, window
 })
