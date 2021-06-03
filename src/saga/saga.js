@@ -8,7 +8,7 @@ import {
     FETCH_REPORT_RECEIVED,
     FETCH_CHANGE_REPORT,
     FETCH_CHANGE_REPORT_RECEIVED,
-    localUpdateStoreRow
+    localUpdateStoreRow, POST_IN_FAILED
 } from "../redux/action";
 
 import {put, takeLatest, all} from 'redux-saga/effects';
@@ -21,6 +21,21 @@ const format = (dateString) => {
         return {date, time}
     }
     return null
+}
+
+const formatGrafik = (dateString) => {
+    if (!dateString) {
+        return '-'
+    }
+    let day1 = dateString.split('-')[0].substring(0, 5)
+    let day2 = dateString.split('-')[1].substring(1, 6)
+    if (day2 === '23:59') {
+        return "круглосуточная"
+    }
+    if (day2 === '00:00') {
+        return "нет графика"
+    }
+    return `${day1}-${day2}`
 }
 
 /**saga getApteka */
@@ -41,6 +56,8 @@ function* fetchApteks() {
         parsed.isFilter = true
         newList.push(parsed)
     })
+    console.log(newList)
+    console.log('data', data)
     yield put({type: APTEKS_RECEIVED, data: newList});
 }
 
@@ -49,7 +66,7 @@ function* fetchApteksWatcher() {
 }
 
 
-/** saga postComment */
+///////// добавление поста
 function* postComment(action) {
     let options = {
         method: 'POST',
@@ -59,18 +76,34 @@ function* postComment(action) {
         body: JSON.stringify(action.value)
     }
     console.log('saga', action.value)
-    let nowDate = new Date().toISOString().substr(0, 10)
-    let newDate = {
-        dateStart: nowDate,
-        dateEnd: nowDate
-    }
     try {
         const data = yield fetch(process.env.REACT_APP_SAGA_INPUT_COMMENT, options)
             .then(response => response.json());
-        yield put({type: POST_COMMENT_RECEIVED, data: data});
-        yield put({type: FETCH_REPORT, value: newDate});
+        console.log('newdata', data)
+
+        let List = []
+        data[0].map(post => {
+            let pars = {}
+            pars.apteka = post.apteka
+            pars.diff = post.diff
+            pars.dt_date = format(post.dt_date)?.date
+            pars.date = post.dt_date.substring(0, 10)
+            pars.grafik = formatGrafik(post.grafik)
+            pars.dt_end = format(post.dt_end)?.time
+            pars.dt_begin = format(post.dt_begin)?.time
+            pars.comment = post?.comment
+            pars.id = post.id
+            pars.CounselName = post.CounselName
+            pars.kurPhone = post.kurPhone
+            pars.phone = post.phone
+            List.push(pars)
+        })
+        console.log('List', List)
+
+
+        yield put({type: POST_COMMENT_RECEIVED, data: List});
     } catch (error) {
-        yield put({type: LOG_IN_FAILED, data: error.toString()});
+        yield put({type: POST_IN_FAILED, data: false});
     }
 }
 
@@ -91,20 +124,6 @@ function* fetchReport(action) {
         let data = yield fetch(process.env.REACT_APP_SAGA_FETCH_REPORT, options)
             .then(response => response.json());
 
-        const formatGrafik = (dateString) => {
-            if (!dateString) {
-                return '-'
-            }
-            let day1 = dateString.split('-')[0].substring(0, 5)
-            let day2 = dateString.split('-')[1].substring(1, 6)
-            if (day2 === '23:59') {
-                return "круглосуточная"
-            }
-            if (day2 === '00:00') {
-                return "нет графика"
-            }
-            return `${day1}-${day2}`
-        }
         let newList = []
         data.map(item => {
             let parsed = {}
@@ -117,8 +136,12 @@ function* fetchReport(action) {
             parsed.dt_begin = format(item.dt_begin)?.time
             parsed.comment = item?.comment
             parsed.id = item.id
+            parsed.CounselName = item.CounselName
+            parsed.kurPhone = item.kurPhone
+            parsed.phone = item.phone
             newList.push(parsed)
         })
+        console.log('data', data)
         console.log(newList)
         yield put({type: FETCH_REPORT_RECEIVED, data: newList});
     } catch (error) {

@@ -13,6 +13,7 @@ import useInput from "../hooks/useInput";
 const mapStateToProps = (state) => ({
     reportForExel: state.comment.reportForExel,
     tableReport: state.comment.tableReport,
+    window: state.comment.window,
 })
 
 const mapDispatchToProps = ({
@@ -33,11 +34,7 @@ const $TitleNavbar = (props) => {
         props.fetchReport({
             dateStart: TimeStart.value,
             dateEnd: TimeEnd.value,
-            window: props.window,
         })
-    }
-    const infoClick = () => {
-        props.selectWindow('info')
     }
     const obj = {
         columns: ['Дата', 'Аптека', 'График', 'Выключили', 'Включили', 'Коментарий'],
@@ -45,28 +42,43 @@ const $TitleNavbar = (props) => {
             [1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [1, 7],
         ]
     }
+
+    let textTitle
+
+    if (props.window === 'component') {
+        textTitle = 'Выключение света'
+    }
+    if (props.window === 'info') {
+        textTitle = 'Информация по аптекам'
+    }
+    if (props.window === 'trable') {
+        textTitle = 'Проблемы ТТ'
+    }
+
     return (
         <Navbar bg="dark" variant="dark" className="wraperNavbar">
             <div className='d-flex'>
+                <Excel dataSet={obj.data}
+                       writeReportForExel={props.writeReportForExel}
+                       tableReport={props.tableReport}
+                />
                 <FormControl {...TimeStart}
-                             className='inputTitleTime' type='date'/>
+                             className='inputTitleTime ml-3' type='date'/>
                 <FormControl {...TimeEnd}
                              className='inputTitleTime' type='date'/>
                 <Button variant="success"
                         onClick={handlerReport}
-                >Отчет</Button>
-                <div className='ml-3'>
-                    <Button className='mr-3'
-                            variant="warning"
-                            onClick={infoClick}
-                    >Инфо по аптекам</Button>
-                    <Excel dataSet={obj.data}
-                           writeReportForExel={props.writeReportForExel}
-                           tableReport={props.tableReport}
-                    />
-                </div>
+                >Выключение света</Button>
+                <Button className='ml-3'
+                        variant="warning"
+                        onClick={() => props.selectWindow('trable')}
+                >Проблемы ТТ</Button>
+                <Button className='ml-3'
+                        variant="warning"
+                        onClick={() => props.selectWindow('info')}
+                >Инфо по аптекам</Button>
             </div>
-                <p className='wraperNavbarText'>Дашборд Аптек</p>
+            <p className='wraperNavbarText'>{textTitle}</p>
         </Navbar>
     );
 };

@@ -37,7 +37,7 @@ const $BordTable = (props) => {
             <table className='table'>
                 <thead>
                 <tr>
-                    <th>Дата</th>
+                    <th className='dataTitle11'>Дата</th>
                     <th>Аптека</th>
                     <th className="colCell">График</th>
                     <th className="colCell">Выключили</th>
@@ -50,8 +50,14 @@ const $BordTable = (props) => {
                 {props.tableReport && props.tableReport.map(post => {
                         return (
                             <tr key={post.id} onDoubleClick={(e) => selectComment(post)}>
-                                <td>{post.dt_date}</td>
-                                <td className="aptekaCell">{post.apteka}</td>
+                                <td className='dataTitle'>{post.dt_date}</td>
+                                <td className="aptekaCell">
+                                    <span className='aptekaTitle'>{post.apteka} </span>
+                                    <span className='tableSpanPhone'>{post.phone}</span>
+                                    <hr className='bordHr'/>
+                                    <span className='tableSpanKurPhone'>{post.CounselName}  ~ </span>
+                                    <span className='tableSpanKurPhone'>{post.kurPhone}</span>
+                                </td>
                                 <td className="colCell">{post.grafik}</td>
                                 <td className="colCell">{post.dt_begin}</td>
                                 <td className="colCell">{post.dt_end}</td>

@@ -19,15 +19,15 @@ const ModalSelectTable = (props) => {
         console.log(comment, dt_end, dt_begin)
     }, [props.active])
     const recordChangesReport = () => {
-        if (dt_begin>dt_end){
-            props.setModalMessage('Некоректное время')
-            return null
-        }
+        // if (dt_begin>dt_end){
+        //     props.setModalMessage('Некоректное время')
+        //     return null
+        // }
         props.fetchPutReport({
             id: props.selectTableComment.id,
             dt_begin: dt_begin || props.selectTableComment.dt_begin,
             dt_end: dt_end || props.selectTableComment.dt_end,
-            comment: comment || props.selectTableComment.comment,
+            comment: comment === '' ? ' ' : (comment || props.selectTableComment.comment),
             dt_date: props.selectTableComment?.date
         })
         clearInput()

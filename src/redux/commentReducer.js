@@ -22,7 +22,8 @@ import {
     LOCAL_UPDATE_STORE_ROW,
     WRITE_REPORT_FOR_EXEL,
     CLEAN_APTEKA,
-    SELECT_WINDOW
+    SELECT_WINDOW,
+    POST_IN_FAILED
 } from "../redux/action";
 
 let message
@@ -38,11 +39,12 @@ const initialState = {
     isLoader: false,
     modalMessage: '',
     error: null,
+    errorPost: null,
     tableReport: null,
     selectTableComment: null,
     isChangeReport: null,
     reportForExel: null,
-    window: 'component'
+    window: 'component',
 }
 
 export const commentReducer = (state = initialState, action) => {
@@ -82,6 +84,8 @@ export const commentReducer = (state = initialState, action) => {
             return {...state, tableReport: action.data, isLoader: false, modalMessage: message}
         case LOG_IN_FAILED:
             return {...state, error: action.data, modalMessage: 'Нет связи с сервером', isLoader: false}
+        case POST_IN_FAILED:
+            return {...state, errorPost: action.data, modalMessage: 'Запись уже существует', isLoader: false}
         case POST_COMMENT:
             return {...state, isLoader: true}
         case POST_COMMENT_RECEIVED:
@@ -90,7 +94,7 @@ export const commentReducer = (state = initialState, action) => {
             } else {
                 message = 'Коментарий неудалось записать'
             }
-            return {...state, postCommentDate: action.data, isLoader: false, modalMessage: message}
+            return {...state, postCommentDate: action.data, tableReport: action.data, isLoader: false, modalMessage: message}
         case CLOSE_APTEKS:
             return {...state, showApteka: false}
         case SHOW_APTEKS:

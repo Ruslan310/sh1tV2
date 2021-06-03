@@ -5,7 +5,6 @@
     font-size: 16px;
     text-align: center;
     user-select: none;
-
 }
 .table thead th {
     font-weight: bold;
@@ -43,6 +42,14 @@ tbody tr:nth-child(odd) {
     text-align: left;
     max-width: 250px;
 }
+.tablePhone{
+    margin-top: 5px;
+    font-size: 13px;
+}
+.bordHr{
+    padding: 0px;
+    margin: 5px;
+}
 .wraperComponent{
     width: 100vw;
     max-width: 100%;
@@ -59,8 +66,8 @@ tbody tr:nth-child(odd) {
     margin-top: 30px;
 }
 .wraperTable{
-    max-width: calc(100vw - 600px);
-    width: calc(100vw - 600px);
+    max-width: calc(100vw - 400px);
+    width: calc(100vw - 400px);
     padding: 20px 40px;
 }
 .textareaComment {
@@ -69,6 +76,7 @@ tbody tr:nth-child(odd) {
 }
 .commentCell {
     max-width: 200px;
+    text-align: left;
 }
 .saveButton {
     margin: 10px auto 0;
@@ -83,4 +91,33 @@ tbody tr:nth-child(odd) {
 }
 .colCell{
     max-width: 90px;
+}
+
+.tableSpanPhone{
+    margin-left: 10px;
+    font-size: 14px;
+    color: #777;
+}
+.tableSpanKurPhone{
+    font-size: 14px;
+    color: #777;
+}
+.table tr td {
+    vertical-align: middle;
+}
+
+.aptekaTitle{
+    font-size: 19px;
+}
+
+.dataTitle{
+    font-size: 14px;
+}
+
+.dataTitle11{
+    width: 50px;
+}
+
+.inputTitleTime{
+    width: 170px;
 }

@@ -16,11 +16,13 @@ import {
     postComment,
     setModalMessage,
     cleanApteka,
-    resetFilter
+    resetFilter,
+    fetchReport
 } from "../redux/action";
 import TitleNavbar from "./titleNavbar";
 import Info from "./Info";
 import useInput from "../hooks/useInput";
+import TableTrable from "./tableTrable";
 
 const mapStateToProps = (state) => ({
     aptekaFiltered: state.comment.aptekaFiltered,
@@ -34,6 +36,7 @@ const mapStateToProps = (state) => ({
     postCommentDate: state.comment.postCommentDate,
     modalMessage: state.comment.modalMessage,
     window: state.comment.window,
+    tableReport: state.comment.tableReport,
 })
 
 const mapDispatchToProps = ({
@@ -49,16 +52,18 @@ const mapDispatchToProps = ({
     postComment,
     setModalMessage,
     cleanApteka,
-    resetFilter
+    resetFilter,
+    fetchReport
 })
 
 
 const $Comment = (props) => {
-
+    // let nowDate = new Date().toISOString().substr(0, 10)
     const inputenterTimeOff = useInput('')
     const inputenterTimeOn = useInput('')
     const inputtextComment = useInput('')
-    const wrightEntered = () => {
+
+    async function wrightEntered() {
         if (!props.textApteka.idApteka) {
             props.setModalMessage('Выберите аптеку')
             return null
@@ -78,9 +83,9 @@ const $Comment = (props) => {
             whatComment: inputtextComment.value
         })
         props.cleanApteka()
-        inputenterTimeOff.onChange({target:{value:''}})
-        inputenterTimeOn.onChange({target:{value:''}})
-        inputtextComment.onChange({target:{value:''}})
+        inputenterTimeOff.onChange({target: {value: ''}})
+        inputenterTimeOn.onChange({target: {value: ''}})
+        inputtextComment.onChange({target: {value: ''}})
     }
 
     return (
@@ -153,6 +158,9 @@ const $Comment = (props) => {
             </div>}
             {props.window === 'info' && <Info
                 resetFilter={props.resetFilter}
+            />}
+            {props.window === 'trable' && <TableTrable
+                // resetFilter={props.resetFilter}
             />}
         </div>
     );

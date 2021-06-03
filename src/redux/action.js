@@ -22,6 +22,7 @@ export const LOCAL_UPDATE_STORE_ROW = 'LOCAL_UPDATE_STORE_ROW'
 export const WRITE_REPORT_FOR_EXEL = 'WRITE_REPORT_FOR_EXEL'
 export const CLEAN_APTEKA = 'CLEAN_APTEKA'
 export const SELECT_WINDOW = 'SELECT_WINDOW'
+export const POST_IN_FAILED = 'POST_IN_FAILED'
 
 export const localUpdateStoreRow = value => ({
     type: LOCAL_UPDATE_STORE_ROW, value
@@ -37,6 +38,9 @@ export const fetchPutReport = (value) => ({
 })
 export const fetchError = (value) => ({
     type: LOG_IN_FAILED,value
+})
+export const postError = (value) => ({
+    type: POST_IN_FAILED,value
 })
 export const postComment = (value) => ({
     type: POST_COMMENT,value
