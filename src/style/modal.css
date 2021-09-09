@@ -1,7 +1,7 @@
 .services{
     height: 100vh;
     width: 100vw;
-    background-color: rgba(0,0,0, 0.4);
+    background-color: rgba(0,0,0, 0.2);
     position: fixed;
     top: 0;
     left: 0;
@@ -11,8 +11,8 @@
     opacity: 0;
     pointer-events: none;
     transition: 0.3s;
-    backdrop-filter: blur(2px);
-    z-index:16;
+    backdrop-filter: blur(1px);
+    z-index:5;
     user-select: none;
 }
 .services.active {
@@ -23,12 +23,12 @@
     margin-bottom: 100px;
     padding: 20px;
     border-radius: 12px;
-
     background-color: white;
     transform: scale(0.5);
     transition: 0.4s all;
     width: 30vw;
     cursor:pointer;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
 }
 .scroll{
     overflow-y: scroll;
@@ -44,23 +44,26 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
-.scrollApteka{
+.scrollPharmacy{
     margin-bottom:5px;
-    padding: 5px 0 5px 20px;
+    padding: 5px 0 10px 20px;
+    text-align: left;
 }
-.scrollApteka:hover{
+.scrollPharmacy:hover{
     background-color: #9da5a2;
 }
 .services_content.active{
     transform: scale(1);
 }
-.wraperNavbar{
+.wrapperNavbar{
     display: flex;
     width: 100%;
     justify-content: space-between;
-    padding-left: 40px;
+    padding: 10px 30px;
+    background: black;
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
 }
-.wraperNavbarText{
+.wrapperNavbarText{
     color: white;
     text-align: right;
     font-size: 25px;
@@ -72,11 +75,11 @@
 }
 .inputTitleModal{
     width: 350px;
-    margin-right: 10px;
+    margin: 5px;
 }
 .inputModalTime{
     width: 100px;
-    margin-right: 10px;
+    margin: 5px;
 }
 .services_text{
     display: flex;
@@ -87,10 +90,10 @@
     width: 200px;
     margin-bottom: 0;
 }
-.inputinfoForm{
+.inputInfoForm{
     width: 300px;
     text-align: center;
-    margin:20px auto 0;
+    margin:20px auto;
 }
 .modalTitle{
     font-size: 24px;
@@ -101,3 +104,80 @@
     font-weight: bold;
     margin: 10px;
 }
+
+.testMessage {
+    font-size: 18px;
+    white-space: pre-wrap;
+    background: #f3f3f3;
+    padding: 30px;
+    text-align: center;
+    width: 400px;
+}
+
+
+/* export file*/
+.divExport{
+    position: absolute;
+    z-index: 2;
+}
+.exportFile {
+    opacity: 0;
+    width: 150px;
+    height: 40px;
+    cursor:pointer;
+}
+.importExport{
+    position: absolute;
+    left: 0;
+    width: 150px;
+    cursor:pointer;
+}
+.buttonExport{
+    width: 150px;
+    margin: 10px 0;
+}
+.export_content.active{
+    transform: scale(1);
+}
+
+.export_content{
+    padding: 50px;
+    transform: scale(0.5);
+    transition: 0.4s all;
+    width: 150px;
+}
+.export{
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(0,0,0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.3s;
+    backdrop-filter: blur(1px);
+    z-index:5;
+    user-select: none;
+}
+.export.active {
+    opacity: 1;
+    pointer-events: all;
+}
+.blockModalCorrection {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+.blockModalCorrection.butBloc {
+    padding-bottom: 5px;
+    justify-content: flex-end;
+}
+@media screen and (max-width: 1450px) {
+    .export_content{
+        padding: 80px;
+    }
+}
+
+
+/*   end    export file */

@@ -3,12 +3,12 @@ import '../style/loader.css'
 const Loader = () => {
     return (
         <div className='loaderWrapper'>
-            <div className="loadingio-spinner-bars-kggn2zyokxs">
-                <div className="ldio-q7hhewioal">
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
+            <div className="loader-spinner">
+                <div className="loader">
+                    <div> </div>
+                    <div> </div>
+                    <div> </div>
+                    <div> </div>
                 </div>
             </div>
         </div>
