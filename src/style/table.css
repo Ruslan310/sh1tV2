@@ -5,7 +5,18 @@
     font-size: 16px;
     text-align: center;
     user-select: none;
+    position: relative;
+}
+.table tbody {
+    overflow-y: scroll;
 
+}
+.mainWrapper {
+    display: flex;
+    flex-direction: column;
+}
+.pharmacyCollCenter {
+    align-items: center;
 }
 .table thead th {
     font-weight: bold;
@@ -23,52 +34,81 @@
 .table thead tr th:last-child {
     border-radius: 0 8px 8px 0;
 }
-.table th td
-.table tbody td {
-    text-align: center;
-    padding: 10px 15px;
-    border: 1px #f3f3f3 solid ;
-    vertical-align: top;
-}
-tbody tr:nth-child(odd) {
-    /*background: #f3f3f3*/
-}
+
 .table tbody tr td:first-child {
     border-radius: 8px 0 0 8px;
 }
 .table tbody tr td:last-child {
     border-radius: 0 8px 8px 0;
 }
-.aptekaCell{
+.pharmacyCell{
     text-align: left;
     max-width: 250px;
 }
-.wraperComponent{
+
+.titleNameTable{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.tablePhone{
+    margin-top: 5px;
+    font-size: 13px;
+}
+.bordHr{
+    padding: 0;
+    margin: 5px;
+}
+.wrapperBordTable {
+    width: 100vw;
+    height: 100%;
+    padding: 15px;
+}
+.wrapperComponent{
     width: 100vw;
     max-width: 100%;
+    height: 90vh;
+    display: flex;
+    position: relative;
+}
+.wrapperComponentProblem {
+    padding-top: 5px;
+    width: 100vw;
+    max-width: 100%;
+    height: 50vh;
     display: flex;
 }
-.wraperAddComment{
-    width: 600px;
-    max-width: 600px;
+
+.wrapperAddComment{
+    width: 450px;
+    max-width: 450px;
     display: flex;
     flex-direction: column;
     text-align: center;
     align-items: center;
-    padding-right: 30px;
     margin-top: 30px;
 }
-.wraperTable{
-    max-width: calc(100vw - 600px);
-    width: calc(100vw - 600px);
-    padding: 20px 40px;
+.table tr th {
+    position: sticky;
+    top: 0;
 }
+.wrapperTable{
+    max-width: calc(100vw - 400px);
+    width: calc(100vw - 400px);
+    overflow-y: auto;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
 .textareaComment {
     width: calc(100% - 18px);
     margin-left: 10px;
 }
 .commentCell {
     max-width: 200px;
+    text-align: left;
 }
 .saveButton {
     margin: 10px auto 0;
@@ -78,9 +118,181 @@ tbody tr:nth-child(odd) {
     max-width: 1500px;
     margin: 20px auto 0;
 }
-.inputinfoForm  {
-    margin-bottom: 20px;
-}
 .colCell{
-    max-width: 90px;
+    max-width: 95px;
+}
+.colCellD {
+    width: 100px;
+}
+
+.tableSpanPhone{
+    margin-left: 10px;
+    font-size: 14px;
+    color: #777;
+    word-break: keep-all;
+}
+.tableSpanKurPhone{
+    font-size: 14px;
+    color: #777;
+}
+.table tr td {
+    vertical-align: middle;
+}
+
+.pharmacyTitle{
+    font-size: 19px;
+    margin-bottom: 5px;
+}
+.redColor{
+    font-size: 19px;
+    margin-bottom: 5px;
+    color: red;
+}
+.hatchColl{
+    background: repeating-linear-gradient(-30deg, #d8d8d8 0, #d8d8d8 1px, transparent 2px, transparent 12px);
+}
+.dataTitle{
+    font-size: 14px;
+    width: 100px;
+}
+.pharmacyName{
+    font-size: 20px;
+    font-weight: bold;
+}
+.groupName {
+    margin: 0 auto;
+    width: 370px;
+    font-size: 15px;
+    font-weight: bold;
+}
+.colForBorder{
+    font-size: 14px;
+    border-right: 4px solid #d8d8d8;
+    width: 120px;
+    text-align: left;
+}
+
+.inputTitleTime{
+    width: 170px;
+}
+
+.tableContainer{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.postNumber{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: default;
+}
+.postNumber:hover{
+    background: #d8d8d8;
+}
+.brClass{
+    margin: 5px 0;
+}
+.problemNumber{
+    margin: 0 10px;
+    font-size: 20px;
+}
+.iconDelete{
+    background-image: url("./delete.png");
+    background-size: contain;
+    width: 25px;
+    height: 25px;
+}
+.iconDelete:hover{
+    opacity: 0.5;
+}
+.dateOpenApt{
+    font-size: 20px;
+    font-weight: bold;
+    color: #777777;
+}
+.table.colCellImg{
+    padding: 0;
+}
+
+td.colCellImg{
+    width: 70px;
+    height: 70px;
+    padding: 0;
+}
+
+.light{
+    margin: 0 auto;
+    background-size: contain;
+    width: 31px;
+    height: 31px;
+}
+.lightOn{
+    background-image: url("./plaine111.png");
+    margin-bottom: 3px;
+}
+.lightOff{
+    background-image: url("./plaine222.png");
+    margin-bottom: 3px;
+}
+.lightGo{
+    background-image: url("./airplaneBlack.png");
+}
+.lightNotGo{
+    background-image: url("./airplaneWhite.png");
+}
+.colorAllColForNoEnd{
+     background: ghostwhite;
+}
+.categoryColl{
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.tableTd {
+    width: 29%;
+}
+
+.groupCell {
+    width: 190px;
+    max-width: 190px;
+}
+Button {
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+}
+.filterSituation {
+    border-top: 1px solid white;
+    position: absolute;
+    z-index: 6;
+    background: #d8d8d8;
+    padding: 10px;
+    top: 37px;
+    left: 100px;
+    user-select: none;
+    border-radius: 0 0 10px 10px ;
+}
+.filterPharmacy {
+    max-height: 800px;
+    border-top: 1px solid white;
+    position: absolute;
+    z-index: 6;
+    background: #d8d8d8;
+    padding: 10px;
+    top: 37px;
+    left: 420px;
+    user-select: none;
+    border-radius: 0 0 10px 10px ;
+    overflow-y: auto;
+}
+.filterSituationSelect {
+    padding: 5px;
+}
+.filterSituationSelect:hover {
+    color: cornflowerblue;
+    text-decoration: underline;
+}
+@media screen and (max-width: 1750px) {
+    .filterSituation { top: 53px; }
+    .filterPharmacy { top: 53px; }
 }

@@ -1,0 +1,135 @@
+.wrapperProblem {
+    width: 100%;
+    border: none;
+    overflow-y: scroll;
+    font-size: 16px;
+    text-align: center;
+    user-select: none;
+}
+.wrapperProblem thead th {
+    font-weight: bold;
+    border: none;
+    padding: 10px 15px;
+    background: #d8d8d8;
+    border: #f3f3f3;
+}
+
+.wrapperProblem td, th {
+    padding: 10px;
+}
+.wrapperProblem thead tr th:first-child {
+    border-radius: 8px 0 0 8px;
+}
+.wrapperProblem tbody tr:hover{
+    background-color: #b5bdba;
+}
+.wrapperProblem thead tr th:last-child {
+    border-radius: 0 8px 8px 0;
+}
+.wrapperProblem thead th,
+.wrapperProblem th td,
+.wrapperProblem tbody td {
+    border: 1px #f3f3f3 solid ;
+}
+.wrapperProblem tbody tr td:first-child {
+    border-radius: 8px 0 0 8px;
+}
+.wrapperProblem tbody tr td:last-child {
+    border-radius: 0 8px 8px 0;
+}
+
+/* Красивый checkbox */
+.checkbox {
+    display: none;
+}
+.fakeCheckbox {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid forestgreen;
+    vertical-align: middle;
+    margin-top: -2px;
+    margin-right: 4px;
+}
+.checkbox:checked + .fakeCheckbox::before {
+    content: "✓";
+    font-size: 35px;
+    color: forestgreen;
+    display: block;
+    margin-top: -16px;
+}
+label {
+    display: block;
+    cursor: pointer;
+}
+.tableTd{
+    text-align: left;
+}
+/**-------------------------*/
+
+.wrapperProblemTable{
+    width: 100%;
+    display: flex;
+}
+.blockTableProblem{
+    width: 60%;
+    margin: 0 80px;
+}
+.blockTableNumber{
+    width: 40%;
+    margin: 0 80px;
+}
+.tableContainer{
+    width: 100%;
+    margin: 20px 0;
+}
+.wrapperAddNumber{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0;
+}
+.wrapperAddProblem{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin: 20px 20px 40px 20px;
+}
+.buttonProblemAdd{
+    margin: 20px;
+}
+.inputDateProblem{
+    margin-bottom: 10px;
+    width: 400px;
+    font-weight: bold;
+}
+
+.colCommentTrable{
+    width: 400px;
+    font-size: 20px;
+    text-align: left;
+    padding:8px;
+}
+.colProblemDt{
+    width: 80px;
+    font-size: 14px;
+    text-align: center;
+}
+.colProblemTime{
+    width: 5%;
+    font-size: 14px;
+    text-align: center;
+}
+
+.colIsProblem{
+    padding: 2px;
+    width: 170px;
+}
+.colTimeDone{
+    margin-right: 20px;
+}
+.colTimeProblem{
+    font-size: 14px;
+    padding: 0;
+}

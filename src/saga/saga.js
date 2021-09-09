@@ -1,6 +1,6 @@
 import {
-    FETCH_APTEKS,
-    APTEKS_RECEIVED,
+    FETCH_PHARMACY,
+    FETCH_PHARMACY_RECEIVED,
     POST_COMMENT,
     POST_COMMENT_RECEIVED,
     LOG_IN_FAILED,
@@ -8,7 +8,17 @@ import {
     FETCH_REPORT_RECEIVED,
     FETCH_CHANGE_REPORT,
     FETCH_CHANGE_REPORT_RECEIVED,
-    localUpdateStoreRow
+    POST_IN_FAILED,
+    FETCH_GET_TRABLE,
+    FETCH_GET_TRABLE_RECEIVED,
+    ADD_NEW_PROBLEM_COMMENT,
+    ADD_NEW_PROBLEM_COMMENT_RECEIVED,
+    CLOSE_PROBLEM,
+    CLOSE_PROBLEM_RECEIVED,
+    ADD_NEW_NUMBER,
+    ADD_NEW_NUMBER_RECEIVED,
+    RECEIVED_GET_GROUP_AX4,
+    GET_GROUP_AX4
 } from "../redux/action";
 
 import {put, takeLatest, all} from 'redux-saga/effects';
@@ -23,15 +33,76 @@ const format = (dateString) => {
     return null
 }
 
-/**saga getApteka */
-function* fetchApteks() {
-    let data = yield fetch(process.env.REACT_APP_SAGA_GET_DATE_APTEKS)
-        .then(response => response.json());
+const formatGrafik = (dateString) => {
+    if (!dateString) {
+        return '-'
+    }
+    let day1 = dateString.split('-')[0].substring(0, 5)
+    let day2 = dateString.split('-')[1].substring(1, 6)
+    if (day2 === '23:59') {
+        return "круглосуточная"
+    }
+    if (day2 === '00:00') {
+        return "нет графика"
+    }
+    return `${day1}-${day2}`
+}
 
+const parsTableProblem = (array) =>{
+    return array.map(item => {
+        let parsed = {}
+        parsed.id = item.id
+        parsed.dt = format(item.dt).date
+        parsed.time = format(item.dt).time
+        parsed.comment = item.comment
+        parsed.isDone = item.isDone
+        parsed.timeDone = format(item.timeDone)
+        return parsed;
+    })
+}
+
+const currentTime = (firstTime, string) => {
+    let getDate = (string) => new Date(0, 0,0, string.split(':')[0], string.split(':')[1])
+    let dif = getDate(`${new Date().getHours()}:${new Date().getMinutes()}`) - getDate(firstTime)
+    if(dif > 1800000 && string === 'title') {return true}
+    if(dif > 7200000 && string === 'Coll')
+    return false
+}
+
+const addPostLight = (array) =>{
+    return array.map(post => {
+        let pars = {}
+        pars.apteka = post.apteka
+        pars.diff = post.diff
+        pars.category = post.category
+        pars.dt_date = format(post.dt_ins)
+        pars.date = post.dt_ins.substring(0, 10)
+        pars.grafik = formatGrafik(post.grafik)
+        pars.dt_end = format(post.dt_end)?.time
+        pars.dt_begin = format(post.dt_begin)?.time
+        pars.comment = post?.comment
+        pars.id = post.id
+        pars.CounselName = post.CounselName
+        pars.kurPhone = post.kurPhone
+        pars.phone = post.phone
+        pars.situation = post.situation
+        pars.teamAh4 = post.teamAh4 ? post.teamAh4 : '- не выбрана - '
+        pars.isTurnOnOff = post.isTurnOnOff
+        pars.isTurnGo = post.isTurnGo
+        pars.isRedTitle = currentTime(format(post.dt_ins).time, 'title')
+        pars.isCollCurs = currentTime(format(post.dt_ins).time, 'Coll')
+        return pars
+    })
+}
+
+/**saga getPharmacy */
+function* fetchPharmacy() {
+    let data = yield fetch(process.env.REACT_APP_SAGA+'getDatePharmacy')
+        .then(response => response.json());
     let newList = []
     data.map(item => {
         let parsed = {}
-        parsed.idApteka = item.ID_APTEKA
+        parsed.idPharmacy = item.ID_APTEKA
         parsed.apteka = item.APTEKA
         parsed.apteka_date_open = format(item.apteka_date_open)?.date
         parsed.phone = item.Phone
@@ -39,38 +110,35 @@ function* fetchApteks() {
         parsed.days1 = item.days1
         parsed.days2 = item.days2
         parsed.isFilter = true
-        newList.push(parsed)
+        return newList.push(parsed)
     })
-    yield put({type: APTEKS_RECEIVED, data: newList});
+    yield put({type: FETCH_PHARMACY_RECEIVED, data: newList});
 }
 
-function* fetchApteksWatcher() {
-    yield takeLatest(FETCH_APTEKS, fetchApteks)
+function* fetchPharmacyWatcher() {
+    yield takeLatest(FETCH_PHARMACY, fetchPharmacy)
 }
 
+/**  добавление поста   */
 
-/** saga postComment */
 function* postComment(action) {
     let options = {
-        method: 'POST',
+        method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(action.value)
     }
     console.log('saga', action.value)
-    let nowDate = new Date().toISOString().substr(0, 10)
-    let newDate = {
-        dateStart: nowDate,
-        dateEnd: nowDate
-    }
     try {
-        const data = yield fetch(process.env.REACT_APP_SAGA_INPUT_COMMENT, options)
+        let data = yield fetch(process.env.REACT_APP_SAGA+'inputDashboard', options)
             .then(response => response.json());
+        data = addPostLight(data)
+        console.log('beforeNewData', data)
+
         yield put({type: POST_COMMENT_RECEIVED, data: data});
-        yield put({type: FETCH_REPORT, value: newDate});
     } catch (error) {
-        yield put({type: LOG_IN_FAILED, data: error.toString()});
+        yield put({type: POST_IN_FAILED, data: false});
     }
 }
 
@@ -78,7 +146,8 @@ function* postCommentWatcher() {
     yield takeLatest(POST_COMMENT, postComment)
 }
 
-/**saga getReport */
+/**   saga getReport */
+
 function* fetchReport(action) {
     let options = {
         method: 'PUT',
@@ -88,44 +157,14 @@ function* fetchReport(action) {
         body: JSON.stringify(action.value)
     }
     try {
-        let data = yield fetch(process.env.REACT_APP_SAGA_FETCH_REPORT, options)
+        let data = yield fetch(process.env.REACT_APP_SAGA+'getDashboard', options)
             .then(response => response.json());
-
-        const formatGrafik = (dateString) => {
-            if (!dateString) {
-                return '-'
-            }
-            let day1 = dateString.split('-')[0].substring(0, 5)
-            let day2 = dateString.split('-')[1].substring(1, 6)
-            if (day2 === '23:59') {
-                return "круглосуточная"
-            }
-            if (day2 === '00:00') {
-                return "нет графика"
-            }
-            return `${day1}-${day2}`
-        }
-        let newList = []
-        data.map(item => {
-            let parsed = {}
-            parsed.apteka = item.apteka
-            parsed.diff = item.diff
-            parsed.dt_date = format(item.dt_date)?.date
-            parsed.date = item.dt_date.substring(0, 10)
-            parsed.grafik = formatGrafik(item.grafik)
-            parsed.dt_end = format(item.dt_end)?.time
-            parsed.dt_begin = format(item.dt_begin)?.time
-            parsed.comment = item?.comment
-            parsed.id = item.id
-            newList.push(parsed)
-        })
-        console.log(newList)
-        yield put({type: FETCH_REPORT_RECEIVED, data: newList});
+        data = addPostLight(data)
+        yield put({type: FETCH_REPORT_RECEIVED, data: data});
     } catch (error) {
         yield put({type: LOG_IN_FAILED, data: error.toString()});
     }
 }
-
 function* fetchReportWatcher() {
     yield takeLatest(FETCH_REPORT, fetchReport)
 }
@@ -140,10 +179,10 @@ function* fetchPutReport(action) {
         body: JSON.stringify(action.value)
     }
     try {
-        let data = yield fetch(process.env.REACT_APP_SAGA_PUT_REPORT, options)
+        let data = yield fetch(process.env.REACT_APP_SAGA+'changeDashboard', options)
             .then(response => response.json());
+        data = addPostLight(data)
         yield put({type: FETCH_CHANGE_REPORT_RECEIVED, data: data});
-        yield put(localUpdateStoreRow(Object.assign(action.value, {isChange: data})))
     } catch (error) {
         yield put({type: LOG_IN_FAILED, data: error.toString()});
     }
@@ -153,9 +192,148 @@ function* fetchPutReportWatcher() {
     yield takeLatest(FETCH_CHANGE_REPORT, fetchPutReport)
 }
 
+/**saga getProblemInfo */
+function* fetchGetTrable() {
+    let options = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }
+    try {
+        let data = yield fetch(process.env.REACT_APP_SAGA+'getTrable', options)
+            .then(response => response.json());
+        data = parsTableProblem(data)
+        yield put({type: FETCH_GET_TRABLE_RECEIVED, data: data});
+    } catch (error) {
+        yield put({type: LOG_IN_FAILED, data: error.toString()});
+    }
+}
+
+function* fetchGetProblemWatcher() {
+    yield takeLatest(FETCH_GET_TRABLE, fetchGetTrable)
+}
+
+/**  добавление нового поста проблемы  */
+function* addNewProblemComment(action) {
+    let options = {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(action.value)
+    }
+    console.log('saga', action.value)
+    try {
+        let data = yield fetch(process.env.REACT_APP_SAGA+'addNewTrable', options)
+            .then(response => response.json());
+
+        data = parsTableProblem(data)
+
+
+        yield put({type: ADD_NEW_PROBLEM_COMMENT_RECEIVED, data: data});
+    } catch (error) {
+        yield put({type: POST_IN_FAILED, data: false});
+    }
+}
+
+function* addNewProblemCommentWatcher() {
+    yield takeLatest(ADD_NEW_PROBLEM_COMMENT, addNewProblemComment)
+}
+
+
+/**  апдейт поста в проблемах  */
+function* closeProblem(action) {
+    let options = {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(action.value)
+    }
+    console.log('sagaID', action.value)
+    try {
+        let data = yield fetch(process.env.REACT_APP_SAGA+'updateTrable', options)
+            .then(response => response.json());
+
+        data = parsTableProblem(data)
+
+        yield put({type: CLOSE_PROBLEM_RECEIVED, data: data});
+    } catch (error) {
+        yield put({type: POST_IN_FAILED, data: false});
+    }
+}
+
+function* updateNewProblemCommentWatcher() {
+    yield takeLatest(CLOSE_PROBLEM, closeProblem)
+}
+
+/**  добавление нового номера  */
+function* addNewNumber(action) {
+    let options = {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(action.value)
+    }
+    console.log('saga', action.value)
+    try {
+        let data = yield fetch(process.env.REACT_APP_SAGA+'addNewNumber', options)
+            .then(response => response.json());
+let newNumber = []
+        console.log(data)
+        data.map(post => {
+            let parsed = {}
+            parsed.id = post.id
+            parsed.comment = post.comment
+            return newNumber.push(parsed)
+        })
+
+        yield put({type: ADD_NEW_NUMBER_RECEIVED, data: newNumber});
+    } catch (error) {
+        yield put({type: POST_IN_FAILED, data: false});
+    }
+}
+
+function* addNewNumberWatcher() {
+    yield takeLatest(ADD_NEW_NUMBER, addNewNumber)
+}
+
+
+/**  получение бригады АХЧ  */
+function* getGroupAX4() {
+    let options = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }
+    try {
+        let data = yield fetch(process.env.REACT_APP_SAGA+'groupAX4', options)
+            .then(response => response.json());
+        yield put({type: RECEIVED_GET_GROUP_AX4, data: data});
+    } catch (error) {
+        yield put({type: LOG_IN_FAILED, data: false});
+    }
+}
+
+function* getGroupAX4Watcher() {
+    yield takeLatest(GET_GROUP_AX4, getGroupAX4)
+}
+
+
 export default function* rootSaga() {
     yield all([
-        fetchApteksWatcher(), postCommentWatcher(), fetchReportWatcher(), fetchPutReportWatcher()
+        fetchPharmacyWatcher(),
+        postCommentWatcher(),
+        fetchReportWatcher(),
+        fetchPutReportWatcher(),
+        fetchGetProblemWatcher(),
+        updateNewProblemCommentWatcher,
+        addNewProblemCommentWatcher(),
+        getGroupAX4Watcher(),
+        addNewNumberWatcher()
     ])
 }
   
