@@ -52,8 +52,8 @@ const $Info = ({ pharmacyList, window, resetFilter, setFilter }) => {
                         if (item.isFilter) {
                             return (
                                 <tr key={item.idPharmacy}>
-                                    <td className='tableTd'>{item.apteka}</td>
-                                    <td>{item.apteka_date_open}</td>
+                                    <td className='tableTd'>{item.pharmacy}</td>
+                                    <td>{item.pharmacy_date_open}</td>
                                     <td>{item.phone}</td>
                                     <td>{item.town}</td>
                                 </tr>

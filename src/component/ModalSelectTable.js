@@ -1,7 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {Button, FormControl} from "react-bootstrap";
 
-const ModalSelectTable = ({active, setActive, selectTableComment, fetchPutReport,writeSelectTableRow, groupAx4}) => {
+const ModalSelectTable = ({
+                              active,
+                              setActive,
+                              selectTableComment,
+                              fetchPutReport,
+                              writeSelectTableRow,
+                              groupAx4}) => {
+
     const [comment, setComment] = useState('')
     const [dt_end, setDt_end] = useState('')
     const [dt_begin, setDt_begin] = useState('')

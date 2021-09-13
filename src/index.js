@@ -7,6 +7,7 @@ import saga from "redux-saga"
 import {rootReducer} from "./redux/reducer/rootReducer";
 import rootSaga from '../src/saga/saga'
 import './style/reset.css'
+import './style/modal.css'
 
 const sagaMiddleware = saga()
 const store = createStore(rootReducer, compose(
