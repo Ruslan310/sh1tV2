@@ -32,7 +32,7 @@ const $Modal = (props) => {
                  onClick={e => e.stopPropagation()}>
                 <div className='services_text'>
                     <div className="d-flex flex-column align-items-center font-weight-bold">
-                        <h3 className='textModalTitle'>Аптеки</h3>
+                        <h3 className='textModalTitle'>{props.title}</h3>
                         {props.search
                             ? <div className="d-flex flex-row align-items-center">
                                 <FormControl

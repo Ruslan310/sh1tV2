@@ -39,7 +39,6 @@ const mapDispatchToProps = ({
 const $BordTable = (props) => {
 
     const [active, setActive] = useState(false)
-
     const [openFilterSituation, setOpenFilterSituation] = useState(false)
     const [openFilterPharmacy, setOpenFilterPharmacy] = useState(false)
     const [openFilterTeamAh4, setOpenFilterTeamAh4] = useState(false)
@@ -59,18 +58,35 @@ const $BordTable = (props) => {
     let pharmacy = [...new Set(props.tableReport?.map(el => el.apteka).sort())]
     let group = props.groupAx4?.map(el => el._Description).sort()
 
+
+    const isFilterTable = (filter, arr) => filter === 'Все' ? arr : arr === filter
+
+
+    console.log('Situation', openFilterSituation)
+    console.log('Pharmacy', openFilterPharmacy)
+    console.log('TeamAh4', openFilterTeamAh4)
+
     return (
         <div className='wrapperTable'>
 
-            { openFilterSituation && <FilterForTableComments
+            <FilterForTableComments
+                open = { openFilterSituation }
+                close = { setOpenFilterTeamAh4 }
                 setArray = {props.setFilterSituation}
-                array = {props.arraySituation}  styleComp={'situation'}/> }
-            { openFilterPharmacy && <FilterForTableComments
+                array = {props.arraySituation}
+                styleComp={'situation'}/>
+            <FilterForTableComments
+                open = { openFilterPharmacy }
+                close = { setOpenFilterPharmacy }
                 setArray = {props.setFilterPharmacy}
-                array = {pharmacy} styleComp={'pharmacy'}/> }
-            { openFilterTeamAh4 && <FilterForTableComments
+                array = {pharmacy}
+                styleComp={'pharmacy'}/>
+            <FilterForTableComments
+                open = { openFilterTeamAh4 }
+                close = { setOpenFilterTeamAh4 }
                 setArray = {props.setFilterGroup}
-                array = {group} styleComp={'groupAx4'}/> }
+                array = {group}
+                styleComp={'groupAx4'}/>
 
             <ModalSelectTable
                 active={active}
@@ -119,9 +135,7 @@ const $BordTable = (props) => {
                         if (post.category === 3) classNameForCategory = {color: "#f1da5b"}
                         if (post.category === 4) classNameForCategory = {color: "#92caf1"}
 
-                        const isFilterTable = (filter, arr) => filter === 'Все' ? arr : arr === filter
-
-                        if(    isFilterTable( props.filterSituation, post.situation )
+                        if( isFilterTable( props.filterSituation, post.situation )
                             && isFilterTable( props.filterPharmacy, post.apteka )
                             && isFilterTable( props.filterGroupAx4,post.teamAh4 )) {
 
@@ -139,7 +153,8 @@ const $BordTable = (props) => {
                                     <td style={classNameForCategory} className='categoryColl'>{post.category}</td>
                                     <td className="pharmacyCell">
                                         <div className='titleNameTable'>
-                                            <span className={classNameForTitleApt}>{post.apteka}</span>
+                                        <span className={classNameForTitleApt}
+                                        >{post.apteka}</span>
                                             <span className='tableSpanPhone'>{post.phone}</span>
                                         </div>
                                         <hr className='bordHr'/>
@@ -160,7 +175,7 @@ const $BordTable = (props) => {
                                     <td className="commentCell">{post.comment}</td>
                                 </tr>
                             )
-                        } return null
+                        } else return null
                     }
                 )}
                 </tbody>

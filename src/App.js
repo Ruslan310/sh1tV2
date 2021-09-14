@@ -36,7 +36,7 @@ const App = () => {
     }
     let nowDate = new Date().toISOString().substr(0, 10)
     const dispatch = useDispatch()
-    const onLoad = async () => dispatch(getNewNumber(await getTrableNumber()))
+    const onLoad = async () => dispatch(getNewNumber( await getTrableNumber() ))
     useEffect(() => {
         authCheck()
             .then(null)

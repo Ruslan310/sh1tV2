@@ -260,20 +260,34 @@ Button {
     box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
 }
 .filterAll {
-    border-top: 1px solid white;
+    display: block;
     position: absolute;
+    border-top: 1px solid white;
     z-index: 6;
     background: #d8d8d8;
-    padding: 10px;
     top: 37px;
     user-select: none;
-    border-radius: 0 0 10px 10px;
     overflow-y: auto;
-    max-height: 800px;
+    max-height: 0;
+    opacity: 0;
+    left: 0;
+    transition: 0.5s all;
 }
-.situation { left: 100px }
-.pharmacy { left: 21% }
-.groupAx4 { left: 50% }
+.activeFilter {
+    opacity: 1;
+    max-height: 800px;
+    border-radius: 0 0 10px 10px;
+}
+.situation {
+    left: 6%;
+
+}
+.pharmacy {
+    left: 21%;
+}
+.groupAx4 {
+    left: 50%;
+}
 
 .filterSituationSelect {
     padding: 5px;
@@ -283,6 +297,5 @@ Button {
     text-decoration: underline;
 }
 @media screen and (max-width: 1750px) {
-    .filterSituation { top: 53px; }
-    .filterPharmacy { top: 53px; }
+    .filterAll { top: 53px; }
 }

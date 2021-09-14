@@ -55,7 +55,7 @@ const $AddComment = props => {
 
     return (
         <div className="wrapperAddComment">
-            { modalPharmacy && <Modal
+            <Modal
                 setActive={setModalPharmacy}
                 active={modalPharmacy}
                 selectTarget={props.selectTargetPharmacy}
@@ -63,8 +63,9 @@ const $AddComment = props => {
                 id={"idPharmacy"}
                 name={"pharmacy"}
                 list={props.pharmacyList}
-            />}
-            { modalAx4 && <Modal
+                title={'Аптеки'}
+            />
+            <Modal
                 search={false}
                 setActive={setModalAx4}
                 active={modalAx4}
@@ -73,7 +74,8 @@ const $AddComment = props => {
                 groupAx4={props.groupAx4}
                 selectTarget={props.setSelectGroupAx4}
                 list={props.groupAx4}
-            />}
+                title={'Бригады'}
+            />
 
             <Button variant="secondary" className="m-3" onClick={() => setModalPharmacy(true)}
             >Выберите аптеку</Button>

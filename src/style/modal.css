@@ -12,8 +12,11 @@
     pointer-events: none;
     transition: 0.3s;
     backdrop-filter: blur(1px);
-    z-index:5;
+    z-index:10;
     user-select: none;
+}
+.services_content.active{
+    transform: scale(1);
 }
 .services.active {
     opacity: 1;
@@ -33,7 +36,6 @@
 .scroll{
     overflow-y: scroll;
     padding: 30px;
-
     height: 600px;
 }
 .scroll::-webkit-scrollbar{
@@ -51,9 +53,6 @@
 }
 .scrollPharmacy:hover{
     background-color: #9da5a2;
-}
-.services_content.active{
-    transform: scale(1);
 }
 .wrapperNavbar{
     display: flex;

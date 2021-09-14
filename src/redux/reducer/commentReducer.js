@@ -60,7 +60,7 @@ const initialState = {
         'Потолок / стены / пол',
         'Ролет / дверь',
         'Пожар',
-        'Иныее'
+        'Иные'
     ],
     selectGroupAx4: false,
     filterSituation: 'Все',
