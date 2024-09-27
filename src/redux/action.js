@@ -1,4 +1,3 @@
-export const SHOW_MODAL_PHARMACY = 'SHOW_MODAL_PHARMACY'
 export const FETCH_PHARMACY = 'FETCH_PHARMACY'
 export const FETCH_PHARMACY_RECEIVED = 'FETCH_PHARMACY_RECEIVED'
 export const SELECT_TARGET_PHARMACY = 'SELECT_TARGET_PHARMACY'
@@ -35,6 +34,7 @@ export const SET_SELECT_GROUP_AX4 = 'SET_SELECT_GROUP_AX4'
 export const SET_LOADER = 'SET_LOADER'
 export const FILTER_TABLE_SITUATION = 'FILTER_TABLE_SITUATION'
 export const FILTER_TABLE_PHARMACY = 'FILTER_TABLE_PHARMACY'
+export const FILTER_TABLE_GROUP = 'FILTER_TABLE_GROUP'
 
 
 export const setFilterSituation = value => ({
@@ -42,6 +42,9 @@ export const setFilterSituation = value => ({
 })
 export const setFilterPharmacy = value => ({
     type: FILTER_TABLE_PHARMACY, value
+})
+export const setFilterGroup = value => ({
+    type: FILTER_TABLE_GROUP, value
 })
 export const localUpdateStoreRow = value => ({
     type: LOCAL_UPDATE_STORE_ROW, value
@@ -78,9 +81,6 @@ export const postError = (value) => ({
 })
 export const postComment = (value) => ({
     type: POST_COMMENT,value
-})
-export const showModalPharmacy = (params) => ({
-    type: SHOW_MODAL_PHARMACY, params
 })
 export const selectTargetPharmacy = (value) => ({
     type: SELECT_TARGET_PHARMACY, value

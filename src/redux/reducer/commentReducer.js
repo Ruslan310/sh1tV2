@@ -1,5 +1,4 @@
 import {
-    SHOW_MODAL_PHARMACY,
     FETCH_PHARMACY,
     FETCH_PHARMACY_RECEIVED,
     SELECT_TARGET_PHARMACY,
@@ -35,12 +34,12 @@ import {
     SET_LOADER,
     FILTER_TABLE_SITUATION,
     FILTER_TABLE_PHARMACY,
+    FILTER_TABLE_GROUP,
 } from "../action";
 
 let message
 const initialState = {
     pharmacyList: null,
-    showModelPharmacy: false,
     textPharmacy: '',
     isLoader: false,
     modalMessage: '',
@@ -53,10 +52,20 @@ const initialState = {
     problemComment: null,
     problemNumber: null,
     menuExportExel: false,
-    groupAx4: false,
+    groupAx4: [],
+    arraySituation: [
+        'Выключение света',
+        'Реклама',
+        'Канализация',
+        'Потолок / стены / пол',
+        'Ролет / дверь',
+        'Пожар',
+        'Иные'
+    ],
     selectGroupAx4: false,
     filterSituation: 'Все',
     filterPharmacy: 'Все',
+    filterGroupAx4: 'Все',
 }
 
 export const commentReducer = (state = initialState, action) => {
@@ -146,8 +155,6 @@ export const commentReducer = (state = initialState, action) => {
             if (action.data) message = 'Коментарий успешно записан'
             else message = 'Коментарий неудалось записать'
             return {...state, tableReport: action.data, isLoader: false, modalMessage: message}
-        case SHOW_MODAL_PHARMACY:
-            return {...state, showModelPharmacy: action.params}
         case SELECT_TARGET_PHARMACY:
             return {...state, textPharmacy: action.value}
         case SET_FILTER:
@@ -157,7 +164,7 @@ export const commentReducer = (state = initialState, action) => {
             for (let i = 0; i < stOnline.length; i++) {
                 let result = false
                 stOnline[i].isFilter = false
-                if (stOnline[i].apteka.toLowerCase().includes(stText.toLowerCase())) result = true
+                if (stOnline[i].pharmacy.toLowerCase().includes(stText.toLowerCase())) result = true
                 if (result) stOnline[i].isFilter = true
             }
             return {...state, pharmacyList: stOnline}
@@ -183,12 +190,13 @@ export const commentReducer = (state = initialState, action) => {
             return {...state, filterSituation: action.value}
         case FILTER_TABLE_PHARMACY:
             return {...state, filterPharmacy: action.value}
+        case FILTER_TABLE_GROUP:
+            return {...state, filterGroupAx4: action.value}
         case ADD_NEW_NUMBER_RECEIVED:
             if (!action.data) message = 'С номерами что-то не так :('
             else message = ''
             return {...state, problemNumber: action.data, modalMessage: message}
         case GET_NEW_NUMBER:
-            console.log(action.value)
             return {...state, problemNumber: action.value}
         default:
             return state

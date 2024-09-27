@@ -9,7 +9,6 @@
 }
 .table tbody {
     overflow-y: scroll;
-
 }
 .mainWrapper {
     display: flex;
@@ -45,7 +44,6 @@
     text-align: left;
     max-width: 250px;
 }
-
 .titleNameTable{
     display: flex;
     flex-wrap: wrap;
@@ -78,7 +76,6 @@
     height: 50vh;
     display: flex;
 }
-
 .wrapperAddComment{
     width: 450px;
     max-width: 450px;
@@ -171,17 +168,18 @@
     width: 120px;
     text-align: left;
 }
-
 .inputTitleTime{
     width: 170px;
 }
-
 .tableContainer{
     display: flex;
     justify-content: center;
     flex-direction: column;
 }
-
+.inputTime {
+    width: 185px;
+    margin: 10px;
+}
 .postNumber{
     display: flex;
     align-items: center;
@@ -261,30 +259,36 @@ td.colCellImg{
 Button {
     box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
 }
-.filterSituation {
-    border-top: 1px solid white;
+.filterAll {
+    display: block;
     position: absolute;
+    border-top: 1px solid white;
     z-index: 6;
     background: #d8d8d8;
-    padding: 10px;
     top: 37px;
-    left: 100px;
     user-select: none;
-    border-radius: 0 0 10px 10px ;
-}
-.filterPharmacy {
-    max-height: 800px;
-    border-top: 1px solid white;
-    position: absolute;
-    z-index: 6;
-    background: #d8d8d8;
-    padding: 10px;
-    top: 37px;
-    left: 420px;
-    user-select: none;
-    border-radius: 0 0 10px 10px ;
     overflow-y: auto;
+    max-height: 0;
+    opacity: 0;
+    left: 0;
+    transition: 0.5s all;
 }
+.activeFilter {
+    opacity: 1;
+    max-height: 800px;
+    border-radius: 0 0 10px 10px;
+}
+.situation {
+    left: 6%;
+
+}
+.pharmacy {
+    left: 21%;
+}
+.groupAx4 {
+    left: 50%;
+}
+
 .filterSituationSelect {
     padding: 5px;
 }
@@ -293,6 +297,5 @@ Button {
     text-decoration: underline;
 }
 @media screen and (max-width: 1750px) {
-    .filterSituation { top: 53px; }
-    .filterPharmacy { top: 53px; }
+    .filterAll { top: 53px; }
 }

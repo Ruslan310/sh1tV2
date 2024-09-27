@@ -8,12 +8,12 @@ import {
     setFilterPharmacy,
     setIconGo,
     setIconOnOff,
+    setFilterGroup,
     writeSelectTableRow
 } from "../redux/action";
 import ModalSelectTable from "./ModalSelectTable";
-import {addTurnGO, addTurnOnOff} from "../redux/helpFunction";
-import FilterSituation from "./FilterSituation";
-import FilterPharmacy from "./FilterPharmacy";
+import { addTurnGO, addTurnOnOff } from "../redux/helpFunction";
+import FilterForTableComments from "./FilterForTableComments";
 
 const mapStateToProps = (state) => ({
     tableReport: state.comment.tableReport,
@@ -21,15 +21,27 @@ const mapStateToProps = (state) => ({
     groupAx4: state.comment.groupAx4,
     filterSituation: state.comment.filterSituation,
     filterPharmacy: state.comment.filterPharmacy,
+    filterGroupAx4: state.comment.filterGroupAx4,
+    arraySituation: state.comment.arraySituation,
 })
 
-const mapDispatchToProps = ({writeSelectTableRow, fetchPutReport, fetchReport, setIconOnOff, setIconGo, setFilterSituation, setFilterPharmacy})
+const mapDispatchToProps = ({
+    writeSelectTableRow,
+    fetchPutReport,
+    fetchReport,
+    setIconOnOff,
+    setIconGo,
+    setFilterSituation,
+    setFilterGroup,
+    setFilterPharmacy
+})
 
 const $BordTable = (props) => {
 
     const [active, setActive] = useState(false)
     const [openFilterSituation, setOpenFilterSituation] = useState(false)
     const [openFilterPharmacy, setOpenFilterPharmacy] = useState(false)
+    const [openFilterTeamAh4, setOpenFilterTeamAh4] = useState(false)
 
     const selectComment = (post) => {
         props.writeSelectTableRow(post)
@@ -39,14 +51,43 @@ const $BordTable = (props) => {
     const lightOnOrNot = async post => props.setIconOnOff( await addTurnOnOff({turn: post.isTurnOnOff, id: post.id}) )
     const lightGoNotGo = async post => props.setIconGo( await addTurnGO({turn: post.isTurnGo, id: post.id}) )
 
-
     const handlerBlurSituation = () => setTimeout( ()=> {setOpenFilterSituation(false)},200)
     const handlerBlurPharmacy = () => setTimeout( ()=> {setOpenFilterPharmacy(false)},200)
+    const handlerBlurGroup = () => setTimeout( ()=> {setOpenFilterTeamAh4(false)},200)
+
+    let pharmacy = [...new Set(props.tableReport?.map(el => el.apteka).sort())]
+    let group = props.groupAx4?.map(el => el._Description).sort()
+
+
+    const isFilterTable = (filter, arr) => filter === 'Все' ? arr : arr === filter
+
+
+    console.log('Situation', openFilterSituation)
+    console.log('Pharmacy', openFilterPharmacy)
+    console.log('TeamAh4', openFilterTeamAh4)
 
     return (
         <div className='wrapperTable'>
-            { openFilterSituation && <FilterSituation setFilterSituation = {props.setFilterSituation}/> }
-            { openFilterPharmacy && <FilterPharmacy setFilterPharmacy = {props.setFilterPharmacy} tableReport={props.tableReport}/> }
+
+            <FilterForTableComments
+                open = { openFilterSituation }
+                close = { setOpenFilterTeamAh4 }
+                setArray = {props.setFilterSituation}
+                array = {props.arraySituation}
+                styleComp={'situation'}/>
+            <FilterForTableComments
+                open = { openFilterPharmacy }
+                close = { setOpenFilterPharmacy }
+                setArray = {props.setFilterPharmacy}
+                array = {pharmacy}
+                styleComp={'pharmacy'}/>
+            <FilterForTableComments
+                open = { openFilterTeamAh4 }
+                close = { setOpenFilterTeamAh4 }
+                setArray = {props.setFilterGroup}
+                array = {group}
+                styleComp={'groupAx4'}/>
+
             <ModalSelectTable
                 active={active}
                 setActive={setActive}
@@ -56,21 +97,26 @@ const $BordTable = (props) => {
                 writeSelectTableRow={props.writeSelectTableRow}
                 groupAx4={props.groupAx4}
             />
+
             <table className='table'>
                 <thead>
                 <tr>
                     <th className='dataTitle'>Дата</th>
-                    <th className='groupCell' onBlur={ handlerBlurSituation } tabIndex={0}
+                    <th className='groupCell'
+                        onBlur={ handlerBlurSituation } tabIndex={0}
                         onClick={()=>setOpenFilterSituation(true)}
                     >Авар. ситуация</th>
                     <th className="colCell">Категория</th>
-                    <th onClick={()=> setOpenFilterPharmacy(true)} onBlur={ handlerBlurPharmacy }  tabIndex={0}>Аптека</th>
+                    <th onClick={()=> setOpenFilterPharmacy(true)}
+                        onBlur={ handlerBlurPharmacy }  tabIndex={0}>Аптека</th>
                     <th className="colCell">График</th>
                     <th className="colCell">Выкл</th>
                     <th className="colCell">Вкл</th>
                     <th className="colCell"> </th>
                     <th className="colCellD">Разница</th>
-                    <th className='groupCell'>Бригада</th>
+                    <th className='groupCell'
+                        onClick={()=> setOpenFilterTeamAh4(true)}
+                        onBlur={ handlerBlurGroup }  tabIndex={0}>Бригада</th>
                     <th className="commentCell">Коментарий</th>
                 </tr>
                 </thead>
@@ -89,10 +135,10 @@ const $BordTable = (props) => {
                         if (post.category === 3) classNameForCategory = {color: "#f1da5b"}
                         if (post.category === 4) classNameForCategory = {color: "#92caf1"}
 
-                        let isFilterSituation = props.filterSituation === 'Все' ? post.situation : post.situation === props.filterSituation
-                        let isFilterPharmacy = props.filterPharmacy === 'Все' ? post.apteka : post.apteka === props.filterPharmacy
+                        if( isFilterTable( props.filterSituation, post.situation )
+                            && isFilterTable( props.filterPharmacy, post.apteka )
+                            && isFilterTable( props.filterGroupAx4,post.teamAh4 )) {
 
-                        if(isFilterSituation && isFilterPharmacy) {
                             return (
                                 <tr key={post.id}
 
@@ -125,7 +171,7 @@ const $BordTable = (props) => {
                                            onClick={() => lightGoNotGo(post)}> </p>
                                     </td>
                                     <td className="colCell">{post.diff}</td>
-                                    <td>{post.teamAh4}</td>
+                                    <td onClick={()=>setOpenFilterTeamAh4(true)}>{post.teamAh4}</td>
                                     <td className="commentCell">{post.comment}</td>
                                 </tr>
                             )

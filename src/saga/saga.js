@@ -103,8 +103,8 @@ function* fetchPharmacy() {
     data.map(item => {
         let parsed = {}
         parsed.idPharmacy = item.ID_APTEKA
-        parsed.apteka = item.APTEKA
-        parsed.apteka_date_open = format(item.apteka_date_open)?.date
+        parsed.pharmacy = item.APTEKA
+        parsed.pharmacy_date_open = format(item.apteka_date_open)?.date
         parsed.phone = item.Phone
         parsed.town = item.TownRu
         parsed.days1 = item.days1
@@ -302,7 +302,7 @@ function* addNewNumberWatcher() {
 
 
 /**  получение бригады АХЧ  */
-function* getGroupAX4() {
+function* getGroupAx4() {
     let options = {
         method: 'GET',
         headers: {
@@ -310,7 +310,7 @@ function* getGroupAX4() {
         }
     }
     try {
-        let data = yield fetch(process.env.REACT_APP_SAGA+'groupAX4', options)
+        let data = yield fetch(process.env.REACT_APP_SAGA+'groupAx4', options)
             .then(response => response.json());
         yield put({type: RECEIVED_GET_GROUP_AX4, data: data});
     } catch (error) {
@@ -318,8 +318,8 @@ function* getGroupAX4() {
     }
 }
 
-function* getGroupAX4Watcher() {
-    yield takeLatest(GET_GROUP_AX4, getGroupAX4)
+function* getGroupAx4Watcher() {
+    yield takeLatest(GET_GROUP_AX4, getGroupAx4)
 }
 
 
@@ -332,7 +332,7 @@ export default function* rootSaga() {
         fetchGetProblemWatcher(),
         updateNewProblemCommentWatcher,
         addNewProblemCommentWatcher(),
-        getGroupAX4Watcher(),
+        getGroupAx4Watcher(),
         addNewNumberWatcher()
     ])
 }

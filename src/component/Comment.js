@@ -1,8 +1,7 @@
 import {connect} from "react-redux";
-import Modal from "./Modal";
 import Loader from "./loader";
 import BordTable from "./BordTable";
-import {showModalPharmacy, setFilter, closeExportMenu, setLoader, setModalMessage} from "../redux/action";
+import {setFilter, closeExportMenu, setLoader, setModalMessage} from "../redux/action";
 import TitleNavbar from "./TitleNavbar";
 import Info from "./info/Info";
 import Problem from "./trable/Problem";
@@ -12,7 +11,6 @@ import ModalMessage from "./ModalMessage";
 import AddComment from "./AddComment";
 
 const mapStateToProps = (state) => ({
-    showModelPharmacy: state.comment.showModelPharmacy,
     isLoader: state.comment.isLoader,
     modalMessage: state.comment.modalMessage,
     window: state.comment.window,
@@ -20,16 +18,17 @@ const mapStateToProps = (state) => ({
     menuExportExel: state.comment.menuExportExel,
 })
 
-const mapDispatchToProps = ({showModalPharmacy, setFilter, closeExportMenu, setLoader, setModalMessage})
+const mapDispatchToProps = ({ setFilter, closeExportMenu, setLoader, setModalMessage })
 
 const $Comment = (props) => {
+
     return (
         <div className="mainWrapper">
-            {props.isLoader === true && <Loader/>}
+            {props.isLoader && <Loader/>}
             <TitleNavbar/>
             <ModalMessage/>
-            <Modal active={props.showModelPharmacy}
-                   setActive={props.showModalPharmacy}/>
+            {/*<Modal active={props.showModelPharmacy}*/}
+            {/*       setActive={props.showModalPharmacy}/>*/}
             <ImportExel
                 tableReport={props.tableReport}
                 menuExportExel={props.menuExportExel}
